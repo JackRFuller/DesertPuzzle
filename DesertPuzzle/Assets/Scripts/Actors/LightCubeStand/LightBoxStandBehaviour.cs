@@ -26,18 +26,17 @@ public class LightBoxStandBehaviour : Interactable
             if(PlayerInventory.LightBoxes.Count > 0)
             {
                 lightBox = PlayerInventory.LightBoxes[PlayerInventory.LightBoxes.Count - 1];
-                lightBox.gameObject.SetActive(true);
-                lightBoxHolder.gameObject.SetActive(false);
+                lightBox.gameObject.SetActive(true);                         
 
-                lightBox.SendMessage("PlaceInStand", lightBoxHolder, SendMessageOptions.DontRequireReceiver);
+                lightBox.SendMessage("PlaceInStand", lerpObject, SendMessageOptions.DontRequireReceiver);
 
                 PlayerInventory.RemoveItem(Item.ItemType.LightBox);
             }
         }
         else
         {
-            lightBox.SendMessage("RemoveFromStand", SendMessageOptions.DontRequireReceiver);            
-            lightBoxHolder.gameObject.SetActive(true);
+            lightBox.SendMessage("RemoveFromStand", SendMessageOptions.DontRequireReceiver);
+            lightBox.transform.parent = null;
             lightBox = null;           
         }
     }

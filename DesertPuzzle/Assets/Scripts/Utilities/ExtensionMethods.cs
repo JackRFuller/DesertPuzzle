@@ -5,6 +5,8 @@ public class ExtensionMethods : MonoBehaviour
 {
     public static bool CheckIfRayAndShardAreSameColor(EnergyShardBehaviour energyShard, int colorIndex)
     {
+        //Debug.Log(energyShard.ColorIndex +  " " + colorIndex);
+
         if (energyShard.ColorIndex == colorIndex)
             return true;
         else

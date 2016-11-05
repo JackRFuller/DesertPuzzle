@@ -53,7 +53,7 @@ public class LightBoxBehaviour : Pickup
     {
         rb.isKinematic = true;        
 
-        transform.parent = placementPoint.parent;
+        transform.parent = placementPoint;
         transform.position = placementPoint.position;
         transform.rotation = Quaternion.Euler(new Vector3(0, 0, 0));
         energyBeam.ToggleLineRenderer();

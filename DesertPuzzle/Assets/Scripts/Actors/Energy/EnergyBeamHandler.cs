@@ -109,7 +109,7 @@ public class EnergyBeamHandler : MonoBehaviour
                 }
                 else if(hit.collider.gameObject.layer == LayerMask.NameToLayer("EnergyShard"))
                 {
-                    GameObject shard = hit.collider.transform.parent.gameObject;
+                    GameObject shard = hit.collider.gameObject;
                     HitEnergyShard(shard, i);
                 }
                 else
@@ -182,6 +182,8 @@ public class EnergyBeamHandler : MonoBehaviour
 
     void HitEnergyShard(GameObject shard, int index)
     {
+        //Debug.Log("Hit Energy Shard");
+
         if(activeEnergyShard == null || activeEnergyShard != shard)
         {
             activeEnergyShard = shard;

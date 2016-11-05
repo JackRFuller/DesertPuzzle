@@ -172,10 +172,10 @@ public class WS : Editor {
 	void OnSceneGUI ()
 	{
 		WireSystem script = (WireSystem) target;
-		for(int j = 0; j < script.poles.Count-1; j++)
-		{
-			Handles.DrawLine(script.poles[j].position, script.poles[j+1].position);
-		}
+		//for(int j = 0; j < script.poles.Count-1; j++)
+		//{
+		//	Handles.DrawLine(script.poles[j].position, script.poles[j+1].position);
+		//}
 
         if (script.poles == null)
         {

@@ -22,7 +22,7 @@ public class PowerGeneratorBehaviour : Interactable, IActivatable
 
     void Start()
     {
-        SetBaseColor();
+        //SetBaseColor();
     }
 
     void SetBaseColor()
