@@ -4,6 +4,9 @@ using System.Collections;
 public class PowerSwitch : MonoBehaviour, IActivatable
 {
     [SerializeField]
+    private ActivatableObjects[] activatableObjects;
+
+    [SerializeField]
     private InvisibleObjects[] invisibleObjects;
 
     [SerializeField]
@@ -48,6 +51,20 @@ public class PowerSwitch : MonoBehaviour, IActivatable
     {
         SetSwitchState();
 
+        for(int i = 0; i < activatableObjects.Length; i++)
+        {
+            if (switchState == SwitchState.On)
+            {
+                activatableObjects[i].PowerOn();
+            }
+            if (switchState == SwitchState.Off)
+            {
+                activatableObjects[i].PowerOff();
+            }
+        }
+
+        
+
         for (int i = 0; i < invisibleObjects.Length; i++)
         {
             invisibleObjects[i].Activate();
@@ -83,10 +100,4 @@ public class PowerSwitch : MonoBehaviour, IActivatable
 
         switchState = SwitchState.Off;
     }
-    
-	
-
-
-
-
 }

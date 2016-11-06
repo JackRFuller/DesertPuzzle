@@ -17,7 +17,7 @@ public class Pickup : MonoBehaviour
         {
             if(mesh.isVisible)
             {
-                EventManager.TriggerEvent("InteractableObject");
+                EventManager.TriggerEvent("PickupInteraction");
 
                 if(ExtensionMethods.CheckForInteraction())
                 {
@@ -40,12 +40,12 @@ public class Pickup : MonoBehaviour
                     canBePickedUp = false;
                     gameObject.SetActive(false);
 
-                    EventManager.TriggerEvent("NonInteractableObject");
+                    EventManager.TriggerEvent("DisablePickupInteraction");
                 }
             } 
             else
             {
-                EventManager.TriggerEvent("NonInteractableObject");
+                EventManager.TriggerEvent("DisablePickupInteraction");
             }           
         }
     } 
@@ -62,7 +62,7 @@ public class Pickup : MonoBehaviour
         if (other.tag.Equals("Player"))
         {
             canBePickedUp = false;
-            EventManager.TriggerEvent("NonInteractableObject");
+            EventManager.TriggerEvent("DisablePickupInteraction");
         }
     }
 

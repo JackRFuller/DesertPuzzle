@@ -1,84 +1,125 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
-public class PowerGeneratorBehaviour : Interactable, IActivatable
+
+public class PowerGeneratorBehaviour : MonoBehaviour
 {
+    [Header("Coloured Switches")]
     [SerializeField]
-    private PowerSwitch[] powerswitches;
+    private List<PowerSwitch> whiteSwitches = new List<PowerSwitch>();
+    [SerializeField]
+    private List<PowerSwitch> greenSwitches = new List<PowerSwitch>();
+    [SerializeField]
+    private List<PowerSwitch> blueSwitches = new List<PowerSwitch>();
+    [SerializeField]
+    private List<PowerSwitch> pinkSwitches = new List<PowerSwitch>();
+    [SerializeField]
+    private List<PowerSwitch> orangeSwitches = new List<PowerSwitch>();
 
-    [SerializeField]
-    private Transform energyShardPoint;
-    private Transform energyShard;
+    private List<PowerSwitch> activatedSwitches = new List<PowerSwitch>();
 
-    [Header("Base Attributes")]
+    [Header("Coloured Wires")]
     [SerializeField]
-    private ObjectColor.ColorClass color;
-    public ObjectColor.ColorClass Color { get { return color; } }
+    private List<WireHandler> whiteWires = new List<WireHandler>();
     [SerializeField]
-    private MeshRenderer powerBase;
-    private Color energyColor;
-    private Material energyMaterial;
-    public Material EnergyMaterial { get { return energyMaterial;} }
+    private List<WireHandler> greenWires = new List<WireHandler>();
+    [SerializeField]
+    private List<WireHandler> blueWires = new List<WireHandler>();
+    [SerializeField]
+    private List<WireHandler> pinkWires = new List<WireHandler>();
+    [SerializeField]
+    private List<WireHandler> orangeWires = new List<WireHandler>();
 
+    private List<WireHandler> activatedWires = new List<WireHandler>();
+
+    private List<PowerSwitch> activeSwitches = new List<PowerSwitch>();
+    private List<WireHandler> activeWires = new List<WireHandler>();
+    
     void Start()
     {
         //SetBaseColor();
+        InitiateWires();
     }
 
-    void SetBaseColor()
+    void InitiateWires()
     {
-        Color energyColor = ColorManager.Instance.Colors[(int)color];       
-
-        energyMaterial = powerBase.material;
-
-        float emissionRate = 0.2f;
-        Color finalColor = energyColor * Mathf.LinearToGammaSpace(emissionRate);
-
-        energyMaterial.color = energyColor;
-        
-        energyMaterial.SetColor("_EmissionColor", finalColor);
-        powerBase.material = energyMaterial;
-    }
-
-    public override void Update()
-    {
-        base.Update();
-
-        if (canInteract)
-            if (ExtensionMethods.CheckForInteraction())
-                Interact();
-    }
-
-
-    public void Interact()
-    {
-        if(energyShard == null)
+        for(int i = 0; i < whiteWires.Count; i++)
         {
-            if (PlayerInventory.EnergyShards.Count > 0)
-            {
-                energyShard = PlayerInventory.EnergyShards[PlayerInventory.EnergyShards.Count - 1];
-                energyShard.gameObject.SetActive(true);
-                energyShardPoint.gameObject.SetActive(false);
-
-                energyShard.SendMessage("PlacedInGenerator", energyShardPoint, SendMessageOptions.DontRequireReceiver); 
-                PlayerInventory.RemoveItem(Item.ItemType.EnergyShard);
-            }
+            whiteWires[i].GetMaterials(0);
         }
-        else
-        {            
-            energyShard = null;
-            energyShardPoint.gameObject.SetActive(true);
-        }
-    }
-
-    /// <summary>
-    /// Triggered when there is an energy shard in place and it's being hit by a light beam
-    /// </summary>
-    public void Activate()
-    {
-        for (int i = 0; i < powerswitches.Length; i++)
+        for (int i = 0; i < greenWires.Count; i++)
         {
-            powerswitches[i].Activate();
+            greenWires[i].GetMaterials(1);
+        }
+        for (int i = 0; i < blueWires.Count; i++)
+        {
+            blueWires[i].GetMaterials(2);
+        }
+        for (int i = 0; i < pinkWires.Count; i++)
+        {
+            pinkWires[i].GetMaterials(3);
+        }
+        for (int i = 0; i < orangeWires.Count; i++)
+        {
+            orangeWires[i].GetMaterials(4);
         }
     }
+
+    public void ActivateSwitches(int switchIndex)
+    {
+        if (activeSwitches.Count > 0)
+            DisableSwitches();
+
+        switch(switchIndex)
+        {
+            case 0:
+                activatedSwitches = whiteSwitches;
+                activatedWires = whiteWires;
+                break;
+            case 1:
+                activatedSwitches = greenSwitches;
+                activatedWires = greenWires;
+                break;
+            case 2:
+                activatedSwitches = blueSwitches;
+                activatedWires = blueWires;
+                break;
+            case 3:
+                activatedSwitches = pinkSwitches;
+                activatedWires = pinkWires;
+                break;
+            case 4:
+                activatedSwitches = orangeSwitches;
+                activatedWires = orangeWires;
+                break;
+        }
+
+        for(int i = 0; i < activatedSwitches.Count; i++)
+        {
+            activeSwitches.Add(activatedSwitches[i]);
+            activeWires.Add(activatedWires[i]);
+        }
+
+        for(int i = 0; i < activatedSwitches.Count; i++)
+        {
+            activeSwitches[i].Activate();
+            activeWires[i].SetWireActive();
+        }
+    }
+
+    public void DisableSwitches()
+    {
+        if (activeSwitches.Count == 0)
+            return;
+
+        for (int i = 0; i < activatedSwitches.Count; i++)
+        {
+            activeSwitches[i].Activate();
+            activeWires[i].SetWireInActive();
+        }
+
+        activeSwitches.Clear();
+        activeWires.Clear();
+    }   
 }

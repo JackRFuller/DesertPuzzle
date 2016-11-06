@@ -5,33 +5,49 @@ using System.Collections;
 public class PlayerInteractionUI : MonoBehaviour, IEvent
 {
     [SerializeField]
-    private Text interationIcon;
+    private GameObject pickUpIcon;
+    [SerializeField]
+    private GameObject interactionIcon;
 
     public void OnEnable()
     {
-        EventManager.StartListening("InteractableObject", EnableInteractionIcon);
-        EventManager.StartListening("NonInteractableObject", DisableInteractionIcon);
+        EventManager.StartListening("PickupInteraction", EnablePickUp);
+        EventManager.StartListening("ObjectInteraction", EnableInteraction);
+        EventManager.StartListening("DisablePickupInteraction", DisablePickup);
+        EventManager.StartListening("DisableInteraction", DisableInteraction);
     }
 
     public void OnDisable()
     {
-        EventManager.StopListening("InteractableObject", EnableInteractionIcon);
-        EventManager.StopListening("NonInteractableObject", DisableInteractionIcon);
+        EventManager.StopListening("PickupInteraction", EnablePickUp);
+        EventManager.StopListening("ObjectInteraction", EnableInteraction);
+        EventManager.StopListening("DisablePickupInteraction", DisablePickup);
+        EventManager.StopListening("DisableInteraction", DisableInteraction);
     }
 
     void Start()
     {
-        DisableInteractionIcon();
-    }    
-
-    void EnableInteractionIcon()
+        DisableInteraction();
+        DisablePickup();
+    }   
+    
+    void EnablePickUp()
     {
-        interationIcon.enabled = true;
+        pickUpIcon.SetActive(true);
+    }
+    
+    void DisablePickup()
+    {
+        pickUpIcon.SetActive(false);
+    } 
+
+    void EnableInteraction()
+    {
+        interactionIcon.SetActive(true);
     }
 
-    void DisableInteractionIcon()
+    void DisableInteraction()
     {
-        interationIcon.enabled = false;
+        interactionIcon.SetActive(false);
     }
-	
 }

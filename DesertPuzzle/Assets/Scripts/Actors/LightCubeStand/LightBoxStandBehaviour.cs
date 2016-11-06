@@ -26,7 +26,9 @@ public class LightBoxStandBehaviour : Interactable
             if(PlayerInventory.LightBoxes.Count > 0)
             {
                 lightBox = PlayerInventory.LightBoxes[PlayerInventory.LightBoxes.Count - 1];
-                lightBox.gameObject.SetActive(true);                         
+                lightBox.gameObject.SetActive(true);
+                lightBox.transform.position = lightBoxHolder.position;
+                lightBox.transform.rotation = lightBoxHolder.rotation;             
 
                 lightBox.SendMessage("PlaceInStand", lerpObject, SendMessageOptions.DontRequireReceiver);
 
@@ -41,14 +43,24 @@ public class LightBoxStandBehaviour : Interactable
         }
     }
 
-    public void InitiateLerp()
+    public void InitiateLerp(int direction)
     {
         if(!isLerping)
         {
             startPos = lerpObject.eulerAngles;
-            targetPos = new Vector3(lerpObject.eulerAngles.x,
-                                    lerpObject.eulerAngles.y + 90,
-                                    lerpObject.eulerAngles.z);
+
+            if(direction == 0)
+            {
+                targetPos = new Vector3(lerpObject.eulerAngles.x,
+                                   lerpObject.eulerAngles.y - 90,
+                                   lerpObject.eulerAngles.z);
+            }
+            else if(direction == 1)
+            {
+                targetPos = new Vector3(lerpObject.eulerAngles.x,
+                                   lerpObject.eulerAngles.y + 90,
+                                   lerpObject.eulerAngles.z);
+            }
 
             timeStartedLerp = Time.time;
             isLerping = true;

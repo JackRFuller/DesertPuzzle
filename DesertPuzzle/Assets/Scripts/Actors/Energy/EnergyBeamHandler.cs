@@ -149,6 +149,7 @@ public class EnergyBeamHandler : MonoBehaviour
     public void DeActivateBeam()
     {
         lineRenderer.enabled = false;
+        DeactiveEnergyShard();
     }
 
     
@@ -182,18 +183,16 @@ public class EnergyBeamHandler : MonoBehaviour
 
     void HitEnergyShard(GameObject shard, int index)
     {
-        //Debug.Log("Hit Energy Shard");
-
         if(activeEnergyShard == null || activeEnergyShard != shard)
         {
             activeEnergyShard = shard;
+            
             energyShardScript = activeEnergyShard.GetComponent<EnergyShardBehaviour>();
         }
 
         if(energyShardScript)
         {
-            if (ExtensionMethods.CheckIfRayAndShardAreSameColor(energyShardScript, colorIndex))
-                energyShardScript.ActivateEnergyShard();
+           energyShardScript.ActivateEnergyShard(colorIndex);
         }
 
         if (index < numberOfReflections - 1)
@@ -202,11 +201,10 @@ public class EnergyBeamHandler : MonoBehaviour
 
     void DeactiveEnergyShard()
     {
-        if (ExtensionMethods.CheckIfRayAndShardAreSameColor(energyShardScript, colorIndex))
+        if(energyShardScript)
             energyShardScript.DeActivateEnergyShard();
 
         activeEnergyShard = null;
         energyShardScript = null;
-        
     }
 }

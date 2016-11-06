@@ -38,7 +38,7 @@ public class LightFilterHandler : Pickup
         newMaterial.color = newColor;
         mesh.material = newMaterial;
 
-        Debug.Log(mesh.material.color.a);
+        //Debug.Log(mesh.material.color.a);
 
         
 

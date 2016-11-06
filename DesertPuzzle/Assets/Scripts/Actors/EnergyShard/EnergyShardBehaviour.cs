@@ -7,9 +7,22 @@ public class EnergyShardBehaviour : MonoBehaviour
     [SerializeField]
     private PowerGeneratorBehaviour powerGeneratorScript;
     
-    private int colorIndex = 0;
+    private int colorIndex = -1;
     public int ColorIndex { get { return colorIndex; } }
-    
+
+    [Header("Energy Shard Colors")]
+    [SerializeField]
+    private Material inactiveMaterial;
+    [SerializeField]
+    private Material[] shardColors;
+
+    private MeshRenderer mesh;
+
+    void Start()
+    {
+        mesh = GetComponent<MeshRenderer>();
+        mesh.material = inactiveMaterial;
+    }
 
     //void PlacedInGenerator(Transform placementPoint)
     //{
@@ -23,19 +36,25 @@ public class EnergyShardBehaviour : MonoBehaviour
     //    colorIndex = (int)powerGeneratorScript.Color;       
     //}
 
-    public void ActivateEnergyShard()
+    public void ActivateEnergyShard(int color)
     {
-        if(!hasBeenActivated)
+        if(colorIndex != color)
         {
-            powerGeneratorScript.Activate();
-            hasBeenActivated = true;
+            colorIndex = color;
+
+            //Change Color
+            mesh.material = shardColors[colorIndex];
+
+            powerGeneratorScript.ActivateSwitches(colorIndex);  
         }
     }
 
     public void DeActivateEnergyShard()
     {
-        powerGeneratorScript.Activate();
-        hasBeenActivated = false;
+        //powerGeneratorScript.Activate();
+        powerGeneratorScript.DisableSwitches();
+        mesh.material = inactiveMaterial;
+        colorIndex = -1;
     }
 	
 }

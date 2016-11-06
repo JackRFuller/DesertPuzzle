@@ -5,10 +5,19 @@ using UnityEngine;
 public class Interactable : MonoBehaviour
 {
     [SerializeField]
+    protected InteractionType interactionType;
+
+    [SerializeField]
     protected MeshRenderer mesh;
 
     protected bool isInSphereOfInfluence;
     protected bool canInteract;
+
+    protected enum InteractionType
+    {
+        oneFunction,
+        multipleFunctions,
+    }
 
     public virtual void Update()
     {
@@ -16,12 +25,28 @@ public class Interactable : MonoBehaviour
         {
             if(mesh.isVisible)
             {
-                EventManager.TriggerEvent("InteractableObject");
+                if(interactionType == InteractionType.multipleFunctions)
+                {
+                    EventManager.TriggerEvent("ObjectInteraction");
+                }
+                else
+                {
+                    EventManager.TriggerEvent("PickupInteraction");
+                }
+                
                 canInteract = true;
             }
             else
             {
-                EventManager.TriggerEvent("NonInteractableObject");
+                if(interactionType == InteractionType.multipleFunctions)
+                {
+                    EventManager.TriggerEvent("DisableInteraction");
+                }
+                else
+                {
+                    EventManager.TriggerEvent("DisablePickupInteraction");
+                }
+                
             }
         }
     }
@@ -40,7 +65,14 @@ public class Interactable : MonoBehaviour
         {
             isInSphereOfInfluence = false;
             canInteract = false;
-            EventManager.TriggerEvent("NonInteractableObject");
+            if (interactionType == InteractionType.multipleFunctions)
+            {
+                EventManager.TriggerEvent("DisableInteraction");
+            }
+            else
+            {
+                EventManager.TriggerEvent("DisablePickupInteraction");
+            }
         }
     }
 }

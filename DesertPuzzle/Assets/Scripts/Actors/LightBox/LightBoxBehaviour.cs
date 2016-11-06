@@ -53,9 +53,7 @@ public class LightBoxBehaviour : Pickup
     {
         rb.isKinematic = true;        
 
-        transform.parent = placementPoint;
-        transform.position = placementPoint.position;
-        transform.rotation = Quaternion.Euler(new Vector3(0, 0, 0));
+        transform.parent = placementPoint;      
         energyBeam.ToggleLineRenderer();
 
         lightBoxState = LightBoxState.OnStand;
@@ -66,6 +64,7 @@ public class LightBoxBehaviour : Pickup
         transform.parent = null;  
         lightBoxState = LightBoxState.Inactive;
         energyBeam.ToggleLineRenderer();
+        energyBeam.DeActivateBeam();
     }
 	
 }
